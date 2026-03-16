@@ -44,13 +44,13 @@ export class PaymentsService {
     });
 
     const total = payments.length;
-    const paid = payments.filter((p) => p.status === 'PAID').length;
-    const pending = payments.filter((p) => p.status === 'PENDING').length;
-    const overdue = payments.filter((p) => p.status === 'OVERDUE').length;
-    const totalAmount = payments.reduce((sum, p) => sum + Number(p.amount), 0);
+    const paid = payments.filter((p: { status: string }) => p.status === PaymentStatus.PAID).length;
+    const pending = payments.filter((p: { status: string }) => p.status === PaymentStatus.PENDING).length;
+    const overdue = payments.filter((p: { status: string }) => p.status === PaymentStatus.OVERDUE).length;
+    const totalAmount = payments.reduce((sum: number, p: { amount: unknown }) => sum + Number(p.amount), 0);
     const collectedAmount = payments
-      .filter((p) => p.status === 'PAID')
-      .reduce((sum, p) => sum + Number(p.amount), 0);
+      .filter((p: { status: string }) => p.status === PaymentStatus.PAID)
+      .reduce((sum: number, p: { amount: unknown }) => sum + Number(p.amount), 0);
 
     return { total, paid, pending, overdue, totalAmount, collectedAmount };
   }

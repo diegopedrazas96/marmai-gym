@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsInt, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { PaymentStatus } from '@marmai/shared';
 
 export class CreatePaymentDto {
   @ApiProperty()
@@ -19,6 +20,11 @@ export class CreatePaymentDto {
   @ApiProperty()
   @IsNumber()
   amount!: number;
+
+  @ApiPropertyOptional({ enum: PaymentStatus })
+  @IsEnum(PaymentStatus)
+  @IsOptional()
+  status?: PaymentStatus;
 
   @ApiPropertyOptional()
   @IsString()
