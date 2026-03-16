@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: marmai-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: marmai
+      POSTGRES_PASSWORD: marmai123
+      POSTGRES_DB: marmai_gym
+    ports:
+      - "5432:5432"
+    volumes:
+      - marmai_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marmai -d marmai_gym"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  marmai_db_data:

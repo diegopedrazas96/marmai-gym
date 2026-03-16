@@ -1,0 +1,39 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "plugins": ["react", "react-hooks", "typescript", "nextjs"],
+  "env": {
+    "es2022": true,
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "18"
+    }
+  },
+  "rules": {
+    "no-debugger": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "no-duplicate-imports": "error",
+    "eqeqeq": ["error", "always"],
+    "no-undef": "off",
+    "typescript/no-explicit-any": "warn",
+    "typescript/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "typescript/consistent-type-imports": ["warn", { "prefer": "type-imports", "disallowTypeAnnotations": true }],
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-no-undef": "error",
+    "react/no-unknown-property": "error",
+    "react/self-closing-comp": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "nextjs/no-img-element": "error",
+    "nextjs/no-html-link-for-pages": "error"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "**/*.js",
+    "**/*.d.ts"
+  ]
+}

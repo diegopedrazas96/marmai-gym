@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(TEACHER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  teacher      Teacher?
+}
+
+model Teacher {
+  id          Int        @id @default(autoincrement())
+  userId      Int        @unique
+  name        String
+  phone       String?
+  specialties String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedules   Schedule[]
+}
+
+model Student {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String?      @unique
+  phone       String?
+  birthDate   DateTime?
+  active      Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  enrollments Enrollment[]
+  payments    Payment[]
+}
+
+model Discipline {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  description String?
+  color       String?      @default("#6366f1")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  schedules   Schedule[]
+  enrollments Enrollment[]
+}
+
+model Schedule {
+  id           Int        @id @default(autoincrement())
+  disciplineId Int
+  teacherId    Int
+  dayOfWeek    DayOfWeek
+  startTime    String
+  endTime      String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  discipline   Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+  teacher      Teacher    @relation(fields: [teacherId], references: [id])
+
+  @@unique([disciplineId, dayOfWeek, startTime])
+}
+
+model Enrollment {
+  id           Int        @id @default(autoincrement())
+  studentId    Int
+  disciplineId Int
+  enrolledAt   DateTime   @default(now())
+  active       Boolean    @default(true)
+  student      Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  discipline   Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, disciplineId])
+}
+
+model Payment {
+  id        Int           @id @default(autoincrement())
+  studentId Int
+  month     Int
+  year      Int
+  amount    Decimal       @db.Decimal(10, 2)
+  status    PaymentStatus @default(PENDING)
+  paidAt    DateTime?
+  notes     String?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  student   Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, month, year])
+}

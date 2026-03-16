@@ -1,0 +1,30 @@
+{
+  "name": "marmai-gym",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@marmai/web",
+    "dev:api": "turbo run dev --filter=@marmai/api",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "lint:all": "oxlint --config .oxlintrc.json apps/api/src/ apps/web/src/ packages/shared/src/",
+    "format": "turbo run format",
+    "clean": "turbo run clean",
+    "docker:db": "docker compose up db -d",
+    "docker:db:stop": "docker compose stop db",
+    "docker:db:reset": "docker compose down db -v"
+  },
+  "devDependencies": {
+    "oxlint": "^1.55.0",
+    "prettier": "^3.3.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.4.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

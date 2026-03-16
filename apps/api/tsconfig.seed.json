@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "@marmai/shared": ["../../packages/shared/src/index.ts"]
+    }
+  },
+  "include": ["prisma/seed.ts"]
+}

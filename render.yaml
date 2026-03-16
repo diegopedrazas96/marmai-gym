@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: marmai-api
+    runtime: docker
+    dockerfilePath: apps/api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/docs
+    envVars:
+      - key: DATABASE_URL
+        sync: false  # Set manually in Render dashboard (Neon connection string)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: PORT
+        value: 3001
+      - key: FRONTEND_URL
+        sync: false  # Set to your frontend URL once available
